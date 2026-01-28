@@ -1,0 +1,231 @@
+[12:57:35] Inicio: 2026-01-27 12:57:35.099571
+[12:57:35] ======================================================================
+[12:57:35] ANALISIS DE HETEROGENEIDAD Y TICKET PROMEDIO
+[12:57:35] ======================================================================
+[12:57:35] ======================================================================
+[12:57:35] FASE 1: Carga de datos
+[12:57:35] ======================================================================
+[12:57:35] Cargando transacciones desde: D:/Binance/Binance Final/Consolidado_al_07dec2025.csv
+[12:57:35] Archivo grande (15.05 GB), procesando por chunks...
+[12:58:08]   Chunk 20...
+[12:58:42]   Chunk 40...
+[12:59:16]   Chunk 60...
+[12:59:50]   Chunk 80...
+[13:00:26]   Chunk 100...
+[13:00:34] Transacciones cargadas: 641,541
+[13:00:34] 
+Cargando clusters desde: D:/Binance/Binance Final/clustering_datos/traders_con_clusters.csv
+[13:00:34] Traders con cluster asignado: 3,262
+[13:00:34] 
+======================================================================
+[13:00:34] FASE 2: Preparacion de datos
+[13:00:34] ======================================================================
+[13:00:34] Asignando clusters a transacciones...
+[13:00:34] 
+Distribucion por tipo de cluster:
+[13:00:34]   M1: 146,909.0 trans, 12.4% vol
+[13:00:34]   M2: 230,130.0 trans, 34.7% vol
+[13:00:34]   P1: 16.0 trans, 0.0% vol
+[13:00:34]   P2: 15,725.0 trans, 2.1% vol
+[13:00:34]   P3: 248,761.0 trans, 50.7% vol
+[13:00:34] 
+Agregando datos diarios globales...
+[13:00:35] Dias: 452
+[13:00:35] 
+Agregando datos por tipo de cluster...
+[13:00:35] Tipos analizados: 5
+[13:00:35] 
+======================================================================
+[13:00:35] FASE 3: Analisis de Ticket Promedio
+[13:00:35] ======================================================================
+[13:00:35] 
+--- 3.1 Ticket Promedio por Dia de Semana ---
+[13:00:35] 
+Dia           Ticket Prom Var vs Media         Volumen      Trans
+[13:00:35] -----------------------------------------------------------------
+[13:00:35] Lunes        $      1,053        +6.5%       1,666,689      1,526
+[13:00:35] Martes       $      1,064        +7.6%       1,703,136      1,536
+[13:00:35] Miercoles    $      1,030        +4.1%       1,620,441      1,506
+[13:00:35] Jueves       $      1,038        +4.9%       1,565,975      1,448
+[13:00:35] Viernes      $      1,027        +3.8%       1,575,639      1,478
+[13:00:35] Sabado       $        911        -7.9%       1,263,184      1,341
+[13:00:35] Domingo      $        798       -19.3%         904,287      1,095
+[13:00:35] 
+Ticket promedio global: $989.20
+[13:00:35] 
+--- 3.2 Ticket: Fin de Semana vs Entre Semana ---
+[13:00:35] 
+  Ticket entre semana:    $1,042.44
+[13:00:35]   Ticket fin de semana:   $854.46
+[13:00:35]   Diferencia:             -18.03%
+[13:00:35] 
+  Test t: t=9.462, p-value=0.0000
+[13:00:35]   -> Diferencia SIGNIFICATIVA (p < 0.05)
+[13:00:35] 
+--- 3.3 Regresion: Efecto FDS en Ticket ---
+[13:00:35] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:             log_ticket   R-squared:                       0.746
+Model:                            OLS   Adj. R-squared:                  0.744
+Method:                 Least Squares   F-statistic:                     491.6
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):          7.95e-114
+Time:                        13:00:35   Log-Likelihood:                 363.75
+No. Observations:                 452   AIC:                            -721.5
+Df Residuals:                     449   BIC:                            -709.2
+Df Model:                           2                                         
+Covariance Type:                  HC3                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept      6.6513      0.011    627.652      0.000       6.631       6.672
+es_fds        -0.1991      0.013    -15.505      0.000      -0.224      -0.174
+tendencia      0.0012   4.34e-05     28.627      0.000       0.001       0.001
+==============================================================================
+Omnibus:                      123.995   Durbin-Watson:                   1.496
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              517.689
+Skew:                          -1.156   Prob(JB):                    3.85e-113
+Kurtosis:                       7.705   Cond. No.                         642.
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[13:00:35] 
+-> Interpretacion:
+[13:00:35]    Coeficiente es_fds: -0.1991
+[13:00:35]    Efecto en ticket: -18.05%
+[13:00:35]    p-value: 0.0000
+[13:00:35] 
+--- 3.4 Descomposicion del Efecto FDS ---
+[13:00:35] 
+  Efecto FDS en Volumen:       -33.4%
+[13:00:35]   Efecto FDS en Transacciones: -18.7%
+[13:00:35]   Efecto FDS en Ticket:        -18.0%
+[13:00:35] 
+  Descomposicion aproximada:
+[13:00:35]   Efecto Volumen = Efecto Trans + Efecto Ticket
+[13:00:35]   -33.4% ≈ -18.7% + -18.0%
+[13:00:35] 
+  Contribucion al efecto total:
+[13:00:35]     - Por menos transacciones: 56.2%
+[13:00:35]     - Por ticket mas pequeno:  54.0%
+[13:00:35] 
+======================================================================
+[13:00:35] FASE 4: Efecto Fin de Semana por Tipo de Agente
+[13:00:35] ======================================================================
+[13:00:35] 
+--- 4.1 Efecto FDS Descriptivo por Tipo ---
+[13:00:35] 
+Tipo                            Vol ES      Vol FDS     Efecto    p-value
+[13:00:35] ---------------------------------------------------------------------------
+[13:00:35] P3                             833,818      528,014     -36.7%    0.0000 ***
+[13:00:35] M2                             556,134      399,281     -28.2%    0.0002 ***
+[13:00:35] M1                             200,485      135,948     -32.2%    0.0000 ***
+[13:00:35] P2                              35,996       20,490     -43.1%    0.0000 ***
+[13:00:35] 
+--- 4.2 Regresiones por Tipo de Agente ---
+[13:00:35] 
+  P3:
+[13:00:35]     Efecto FDS: -37.1% (p=0.0000) ***
+[13:00:35]     R2: 0.406, n=452
+[13:00:35] 
+  M2:
+[13:00:35]     Efecto FDS: -28.8% (p=0.0000) ***
+[13:00:35]     R2: 0.846, n=452
+[13:00:35] 
+  M1:
+[13:00:35]     Efecto FDS: -33.0% (p=0.0000) ***
+[13:00:35]     R2: 0.442, n=452
+[13:00:35] 
+  P2:
+[13:00:35]     Efecto FDS: -52.9% (p=0.0000) ***
+[13:00:35]     R2: 0.338, n=452
+[13:00:35] 
+--- 4.3 Modelo con Interacciones por Tipo ---
+[13:00:35] 
+  Modelo: log_volumen ~ es_fds + es_M2 + es_M1 + es_fds:es_M2 + es_fds:es_M1 + tendencia
+[13:00:35]   Tipo de referencia: P3
+[13:00:35] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.678
+Model:                            OLS   Adj. R-squared:                  0.676
+Method:                 Least Squares   F-statistic:                     535.4
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):               0.00
+Time:                        13:00:35   Log-Likelihood:                -1060.8
+No. Observations:                1356   AIC:                             2136.
+Df Residuals:                    1349   BIC:                             2172.
+Df Model:                           6                                         
+Covariance Type:                  HC3                                         
+================================================================================
+                   coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------
+Intercept       12.7666      0.035    362.305      0.000      12.698      12.836
+es_fds          -0.4656      0.049     -9.559      0.000      -0.561      -0.370
+es_M2           -0.7973      0.046    -17.519      0.000      -0.887      -0.708
+es_M1           -1.4358      0.033    -43.283      0.000      -1.501      -1.371
+es_fds:es_M2     0.1286      0.087      1.470      0.142      -0.043       0.300
+es_fds:es_M1     0.0636      0.064      0.998      0.318      -0.061       0.188
+tendencia        0.0036      0.000     25.207      0.000       0.003       0.004
+==============================================================================
+Omnibus:                      524.683   Durbin-Watson:                   0.509
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             3813.092
+Skew:                          -1.616   Prob(JB):                         0.00
+Kurtosis:                      10.552   Cond. No.                     2.03e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 2.03e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:00:35] 
+-> Interpretacion de Interacciones:
+[13:00:35]    Efecto FDS en P3: -37.2%
+[13:00:35]    Efecto FDS en M2: -28.6% (interaccion p=0.1417) n.s.
+[13:00:35]    Efecto FDS en M1: -33.1% (interaccion p=0.3180) n.s.
+[13:00:35] 
+======================================================================
+[13:00:35] FASE 5: Ticket Promedio por Tipo de Agente
+[13:00:35] ======================================================================
+[13:00:35] 
+Tipo                         Ticket ES   Ticket FDS     Efecto
+[13:00:35] -----------------------------------------------------------------
+[13:00:35] P3                        $      1,401 $      1,136     -18.9%
+[13:00:35] M2                        $        883 $        750     -15.0%
+[13:00:35] M1                        $        589 $        477     -19.0%
+[13:00:35] P2                        $        954 $        803     -15.8%
+[13:00:35] 
+======================================================================
+[13:00:35] FASE 6: Visualizaciones
+[13:00:35] ======================================================================
+[13:00:36] Visualizaciones generadas
+[13:00:36] 
+======================================================================
+[13:00:36] FASE 7: Reporte Final
+[13:00:36] ======================================================================
+
+======================================================================
+ANALISIS DE HETEROGENEIDAD Y TICKET PROMEDIO
+======================================================================
+
+Fecha: 2026-01-27 13:00:36.242938
+
+======================================================================
+DESCOMPOSICION DEL EFECTO FIN DE SEMANA
+======================================================================
+
+  Efecto en Volumen:       -33.4%
+  Efecto en Transacciones: -18.7%
+  Efecto en Ticket:        -18.0%
+
+  Contribucion:
+    - Por menos transacciones: 56.2%
+    - Por ticket mas pequeno:  54.0%
+
+======================================================================
+EFECTO FDS POR TIPO DE AGENTE
+======================================================================
+  P3                       : -36.7% ***
+  M2                       : -28.2% ***
+  M1                       : -32.2% ***
+  P2                       : -43.1% ***

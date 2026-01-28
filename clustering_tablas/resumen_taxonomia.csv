@@ -1,0 +1,6 @@
+tipo_final,userNo_count,volumen_total_sum,volumen_total_mean,volumen_total_median,ticket_promedio_mean,ticket_promedio_median,ticket_promedio_std,n_transacciones_sum,n_transacciones_mean,n_transacciones_median,dias_activo_mean,dias_activo_median,frecuencia_diaria_mean,frecuencia_diaria_median,pct_compras_mean,balance_cv_mean,pct_fds_mean,concentracion_temporal_mean,silhouette_mean,pct_volumen_mercado
+P3,86,337742962.44,3927243.75,1159932.98,1166.35,789.62,1024.26,248761,2892.57,1763.0,226.26,239.5,10.9,8.86,0.47,0.7,0.22,0.44,0.27,50.7338918114913
+M2,53,231295382.78,4364063.83,2556160.68,1016.61,522.12,984.0,230130,4342.08,3445.0,219.62,211.0,18.75,15.9,0.5,0.78,0.22,0.43,0.48,34.74392135866523
+M1,2964,82358441.21,27786.25,1316.08,467.28,196.47,761.11,146909,49.56,5.0,15.83,3.0,1.82,1.38,0.51,0.23,0.24,0.43,0.79,12.371432452433384
+P2,147,14285405.62,97179.63,19972.34,863.69,445.28,1349.3,15725,106.97,46.0,47.07,25.0,1.95,1.73,0.53,0.29,0.19,0.25,0.28,2.145875129336269
+P1,12,32481.86,2706.82,313.69,2609.15,289.86,5545.08,16,1.33,1.0,1.0,1.0,1.33,1.0,0.58,0.0,0.08,1.0,0.31,0.004879246510928444

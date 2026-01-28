@@ -1,0 +1,454 @@
+[13:14:55] Inicio: 2026-01-27 13:14:55.822173
+[13:14:55] ======================================================================
+[13:14:55] ANALISIS DE EFECTOS CALENDARIO - VERSION ROBUSTA
+[13:14:55] ======================================================================
+[13:14:55] ======================================================================
+[13:14:55] FASE 1: Carga de datos P2P
+[13:14:55] ======================================================================
+[13:14:55] Archivo: D:/Binance/Binance Final/Consolidado_al_07dec2025.csv
+[13:14:55] Tamano: 15.05 GB
+[13:14:55] Procesando por chunks...
+[13:15:28]   Chunk 20...
+[13:16:03]   Chunk 40...
+[13:16:42]   Chunk 60...
+[13:17:23]   Chunk 80...
+[13:18:00]   Chunk 100...
+[13:18:10] Transacciones: 641,541
+[13:18:10] 
+======================================================================
+[13:18:10] FASE 2: Descarga de datos de Bitcoin (control)
+[13:18:10] ======================================================================
+[13:18:10] Descargando BTC-USD desde 2024-09-09 hasta 2025-12-04...
+[13:18:27] No se obtuvieron datos de BTC
+[13:18:27] 
+======================================================================
+[13:18:27] FASE 3: Construccion de dataset con controles
+[13:18:27] ======================================================================
+[13:18:27] Construyendo variables calendario...
+[13:18:27] Agregando efectos fijos por mes...
+[13:18:27] Agregando dummies de shocks macroeconomicos...
+[13:18:27]   evento_nov24: 20 dias
+[13:18:27]   evento_mar25: 5 dias
+[13:18:27]   evento_abr25_1: 3 dias
+[13:18:27]   evento_abr25_2: 4 dias
+[13:18:27]   evento_abr25_3: 3 dias
+[13:18:27]   evento_may25: 5 dias
+[13:18:27]   evento_jun25_1: 3 dias
+[13:18:27]   evento_jun25_2: 5 dias
+[13:18:27]   evento_jul25_1: 2 dias
+[13:18:27]   evento_jul25_2: 8 dias
+[13:18:27]   evento_ago25_1: 4 dias
+[13:18:27]   evento_ago25_2: 2 dias
+[13:18:27]   evento_ago_sep25: 8 dias
+[13:18:27]   evento_oct25: 8 dias
+[13:18:27]   evento_oct_nov25: 26 dias
+[13:18:27]   evento_nov25: 4 dias
+[13:18:27]   Total dias con shock: 110
+[13:18:27] Calculando rezagos...
+[13:18:27] 
+Dataset final: 451 observaciones
+[13:18:27] Variables disponibles: 71
+[13:18:27] 
+======================================================================
+[13:18:27] FASE 4: Regresiones con controles de robustez
+[13:18:27] ======================================================================
+[13:18:27] 
+------------------------------------------------------------
+[13:18:27] MODELO 1: Base (solo efectos calendario)
+[13:18:27] ------------------------------------------------------------
+[13:18:27] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.720
+Model:                            OLS   Adj. R-squared:                  0.718
+Method:                 Least Squares   F-statistic:                     180.7
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):           1.03e-76
+Time:                        13:18:27   Log-Likelihood:                -39.668
+No. Observations:                 451   AIC:                             87.34
+Df Residuals:                     447   BIC:                             103.8
+Df Model:                           3                                         
+Covariance Type:                  HC3                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     13.5634      0.024    564.440      0.000      13.516      13.611
+es_fds        -0.4189      0.028    -15.203      0.000      -0.473      -0.365
+es_feriado    -0.1816      0.063     -2.877      0.004      -0.305      -0.058
+tendencia      0.0029      0.000     22.016      0.000       0.003       0.003
+==============================================================================
+Omnibus:                      585.997   Durbin-Watson:                   1.233
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           121805.763
+Skew:                          -6.073   Prob(JB):                         0.00
+Kurtosis:                      82.589   Cond. No.                     1.28e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 1.28e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:18:27]   es_fds: -34.2% (p=0.0000) ***
+[13:18:27]   es_feriado: -16.6% (p=0.0040) ***
+[13:18:27] 
+------------------------------------------------------------
+[13:18:27] MODELO 2: Con rezago de volumen (controla autocorrelacion)
+[13:18:27] ------------------------------------------------------------
+[13:18:27] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.740
+Model:                            OLS   Adj. R-squared:                  0.738
+Method:                 Least Squares   F-statistic:                     147.8
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):           2.36e-80
+Time:                        13:18:27   Log-Likelihood:                -22.296
+No. Observations:                 451   AIC:                             54.59
+Df Residuals:                     446   BIC:                             75.15
+Df Model:                           4                                         
+Covariance Type:                  HC3                                         
+====================================================================================
+                       coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------
+Intercept           10.1151      0.481     21.012      0.000       9.172      11.059
+es_fds              -0.4115      0.024    -16.813      0.000      -0.459      -0.364
+es_feriado          -0.1841      0.066     -2.785      0.005      -0.314      -0.055
+tendencia            0.0021      0.000     14.116      0.000       0.002       0.002
+log_volumen_lag1     0.2570      0.035      7.252      0.000       0.188       0.326
+==============================================================================
+Omnibus:                      629.207   Durbin-Watson:                   1.511
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           173205.547
+Skew:                          -6.849   Prob(JB):                         0.00
+Kurtosis:                      98.024   Cond. No.                     1.26e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 1.26e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:18:27]   es_fds: -33.7% (p=0.0000) ***
+[13:18:27]   es_feriado: -16.8% (p=0.0054) ***
+[13:18:27] 
+------------------------------------------------------------
+[13:18:27] MODELO 3: Con controles de Bitcoin
+[13:18:27] ------------------------------------------------------------
+[13:18:27] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.720
+Model:                            OLS   Adj. R-squared:                  0.718
+Method:                 Least Squares   F-statistic:                     180.7
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):           1.03e-76
+Time:                        13:18:27   Log-Likelihood:                -39.668
+No. Observations:                 451   AIC:                             87.34
+Df Residuals:                     447   BIC:                             103.8
+Df Model:                           3                                         
+Covariance Type:                  HC3                                         
+================================================================================
+                   coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------
+Intercept       13.5634      0.024    564.440      0.000      13.516      13.611
+es_fds          -0.4189      0.028    -15.203      0.000      -0.473      -0.365
+es_feriado      -0.1816      0.063     -2.877      0.004      -0.305      -0.058
+tendencia        0.0029      0.000     22.016      0.000       0.003       0.003
+btc_retorno           0          0        nan        nan           0           0
+btc_vol_alta          0          0        nan        nan           0           0
+==============================================================================
+Omnibus:                      585.997   Durbin-Watson:                   1.233
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           121805.763
+Skew:                          -6.073   Prob(JB):                         0.00
+Kurtosis:                      82.589   Cond. No.                          inf
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is      0. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+[13:18:28]   es_fds: -34.2% (p=0.0000) ***
+[13:18:28]   es_feriado: -16.6% (p=0.0040) ***
+[13:18:28] 
+------------------------------------------------------------
+[13:18:28] MODELO 4: Con dummy de shocks macro
+[13:18:28] ------------------------------------------------------------
+[13:18:28] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.724
+Model:                            OLS   Adj. R-squared:                  0.722
+Method:                 Least Squares   F-statistic:                     240.6
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):          6.75e-110
+Time:                        13:18:28   Log-Likelihood:                -35.936
+No. Observations:                 451   AIC:                             81.87
+Df Residuals:                     446   BIC:                             102.4
+Df Model:                           4                                         
+Covariance Type:                  HC3                                         
+===============================================================================
+                  coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+Intercept      13.5575      0.023    588.372      0.000      13.512      13.603
+es_fds         -0.4126      0.028    -14.608      0.000      -0.468      -0.357
+es_feriado     -0.1640      0.064     -2.547      0.011      -0.290      -0.038
+tendencia       0.0028      0.000     19.027      0.000       0.003       0.003
+shock_macro     0.0826      0.030      2.719      0.007       0.023       0.142
+==============================================================================
+Omnibus:                      583.148   Durbin-Watson:                   1.250
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           119258.510
+Skew:                          -6.023   Prob(JB):                         0.00
+Kurtosis:                      81.748   Cond. No.                     1.29e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 1.29e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:18:28]   es_fds: -33.8% (p=0.0000) ***
+[13:18:28]   es_feriado: -15.1% (p=0.0109) **
+[13:18:28]   shock_macro: +8.6% (p=0.0066) ***
+[13:18:28] 
+------------------------------------------------------------
+[13:18:28] MODELO 5: Con efectos fijos por mes
+[13:18:28] ------------------------------------------------------------
+[13:18:28] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.757
+Model:                            OLS   Adj. R-squared:                  0.749
+Method:                 Least Squares   F-statistic:                     151.8
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):          1.22e-157
+Time:                        13:18:28   Log-Likelihood:                -7.3106
+No. Observations:                 451   AIC:                             44.62
+Df Residuals:                     436   BIC:                             106.3
+Df Model:                          14                                         
+Covariance Type:                  HC3                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     13.6230      0.050    275.203      0.000      13.526      13.720
+es_fds        -0.4250      0.025    -16.674      0.000      -0.475      -0.375
+es_feriado    -0.2137      0.075     -2.854      0.004      -0.360      -0.067
+tendencia      0.0029      0.000     13.886      0.000       0.002       0.003
+mes_2         -0.0040      0.053     -0.075      0.940      -0.108       0.100
+mes_3         -0.0012      0.054     -0.022      0.983      -0.107       0.105
+mes_4         -0.0019      0.057     -0.034      0.973      -0.115       0.111
+mes_5          0.1304      0.057      2.279      0.023       0.018       0.243
+mes_6          0.0410      0.062      0.660      0.509      -0.081       0.163
+mes_7         -0.0183      0.063     -0.290      0.772      -0.142       0.105
+mes_8         -0.0285      0.067     -0.427      0.670      -0.159       0.102
+mes_9         -0.1909      0.054     -3.533      0.000      -0.297      -0.085
+mes_10        -0.2109      0.051     -4.100      0.000      -0.312      -0.110
+mes_11        -0.0255      0.054     -0.474      0.636      -0.131       0.080
+mes_12        -0.0445      0.126     -0.354      0.724      -0.291       0.202
+==============================================================================
+Omnibus:                      662.165   Durbin-Watson:                   1.440
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           218621.094
+Skew:                          -7.504   Prob(JB):                         0.00
+Kurtosis:                     109.811   Cond. No.                     3.63e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 3.63e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:18:28]   es_fds: -34.6% (p=0.0000) ***
+[13:18:28]   es_feriado: -19.2% (p=0.0043) ***
+[13:18:28] 
+------------------------------------------------------------
+[13:18:28] MODELO 6: Completo (todos los controles)
+[13:18:28] ------------------------------------------------------------
+[13:18:28] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.744
+Model:                            OLS   Adj. R-squared:                  0.741
+Method:                 Least Squares   F-statistic:                     197.7
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):          5.51e-122
+Time:                        13:18:28   Log-Likelihood:                -19.091
+No. Observations:                 451   AIC:                             52.18
+Df Residuals:                     444   BIC:                             80.96
+Df Model:                           6                                         
+Covariance Type:                  HC3                                         
+====================================================================================
+                       coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------
+Intercept           10.2141      0.481     21.232      0.000       9.271      11.157
+es_fds              -0.4061      0.025    -16.004      0.000      -0.456      -0.356
+es_feriado          -0.1678      0.067     -2.510      0.012      -0.299      -0.037
+es_fin_mes          -0.0127      0.024     -0.538      0.591      -0.059       0.034
+log_volumen_lag1     0.2494      0.035      7.031      0.000       0.180       0.319
+btc_retorno      -9.107e-18   2.61e-17     -0.349      0.727   -6.03e-17     4.2e-17
+btc_vol_alta              0          0        nan        nan           0           0
+shock_macro          0.0737      0.030      2.493      0.013       0.016       0.132
+tendencia            0.0021      0.000     12.951      0.000       0.002       0.002
+==============================================================================
+Omnibus:                      627.146   Durbin-Watson:                   1.521
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           170551.595
+Skew:                          -6.810   Prob(JB):                         0.00
+Kurtosis:                      97.289   Cond. No.                     4.70e+20
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.39e-34. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+[13:18:28]   es_fds: -33.4% (p=0.0000) ***
+[13:18:28]   es_feriado: -15.4% (p=0.0121) **
+[13:18:28]   es_fin_mes: -1.3% (p=0.5907) 
+[13:18:28]   shock_macro: +7.6% (p=0.0127) **
+[13:18:28] 
+------------------------------------------------------------
+[13:18:28] MODELO 7: Errores Newey-West (HAC) - robusto a autocorrelacion
+[13:18:28] ------------------------------------------------------------
+[13:18:28] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            log_volumen   R-squared:                       0.720
+Model:                            OLS   Adj. R-squared:                  0.718
+Method:                 Least Squares   F-statistic:                     156.3
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):           2.75e-69
+Time:                        13:18:28   Log-Likelihood:                -39.668
+No. Observations:                 451   AIC:                             87.34
+Df Residuals:                     447   BIC:                             103.8
+Df Model:                           3                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         13.5634      0.041    329.225      0.000      13.483      13.644
+es_fds        -0.4189      0.021    -20.052      0.000      -0.460      -0.378
+es_feriado    -0.1816      0.060     -3.050      0.002      -0.298      -0.065
+tendencia      0.0029      0.000     16.404      0.000       0.003       0.003
+==============================================================================
+Omnibus:                      585.997   Durbin-Watson:                   1.233
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           121805.763
+Skew:                          -6.073   Prob(JB):                         0.00
+Kurtosis:                      82.589   Cond. No.                     1.28e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 7 lags and without small sample correction
+[2] The condition number is large, 1.28e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+[13:18:28]   Efecto FDS (HAC): -34.2% (p=0.0000) ***
+[13:18:28] 
+------------------------------------------------------------
+[13:18:28] MODELO 8: Ratio Compra/Venta con controles
+[13:18:28] ------------------------------------------------------------
+[13:18:28] 
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               ratio_cv   R-squared:                       0.511
+Model:                            OLS   Adj. R-squared:                  0.507
+Method:                 Least Squares   F-statistic:                     110.8
+Date:                Tue, 27 Jan 2026   Prob (F-statistic):           1.76e-65
+Time:                        13:18:28   Log-Likelihood:                 112.59
+No. Observations:                 451   AIC:                            -215.2
+Df Residuals:                     446   BIC:                            -194.6
+Df Model:                           4                                         
+Covariance Type:                  HC3                                         
+===============================================================================
+                  coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+Intercept       0.9091      0.017     53.490      0.000       0.876       0.942
+es_fds         -0.0354      0.021     -1.684      0.092      -0.077       0.006
+es_feriado     -0.0800      0.040     -1.995      0.046      -0.159      -0.001
+es_fin_mes      0.0343      0.021      1.645      0.100      -0.007       0.075
+tendencia       0.0015   7.15e-05     20.466      0.000       0.001       0.002
+btc_retorno          0          0        nan        nan           0           0
+==============================================================================
+Omnibus:                       12.695   Durbin-Watson:                   1.337
+Prob(Omnibus):                  0.002   Jarque-Bera (JB):               13.971
+Skew:                           0.337   Prob(JB):                     0.000925
+Kurtosis:                       3.537   Cond. No.                          inf
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is      0. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+[13:18:28]   es_fds: -3.5% (p=0.0923) *
+[13:18:28]   es_feriado: -7.7% (p=0.0460) **
+[13:18:28]   es_fin_mes: +3.5% (p=0.0999) *
+[13:18:28] 
+======================================================================
+[13:18:28] FASE 5: Tabla comparativa de modelos
+[13:18:28] ======================================================================
+[13:18:28] 
+======================================================================
+[13:18:28] COMPARACION DEL EFECTO FIN DE SEMANA ENTRE MODELOS
+[13:18:28] ======================================================================
+[13:18:28] 
+Modelo            Efecto %    p-value       R2      N   Sig
+[13:18:28] ------------------------------------------------------------
+[13:18:28] M1_base             -34.2%     0.0000    0.720    451   ***
+[13:18:28] M2_rezago           -33.7%     0.0000    0.740    451   ***
+[13:18:28] M3_btc              -34.2%     0.0000    0.720    451   ***
+[13:18:28] M4_shocks           -33.8%     0.0000    0.724    451   ***
+[13:18:28] M5_ef_mes           -34.6%     0.0000    0.757    451   ***
+[13:18:28] M6_completo         -33.4%     0.0000    0.744    451   ***
+[13:18:28] M7_HAC              -34.2%     0.0000    0.720    451   ***
+[13:18:28] M8_ratio             -3.5%     0.0923    0.511    451     *
+[13:18:28] 
+======================================================================
+[13:18:28] RESUMEN DE ROBUSTEZ
+[13:18:28] ======================================================================
+[13:18:28]   Efecto FDS minimo:  -34.6%
+[13:18:28]   Efecto FDS maximo:  -3.5%
+[13:18:28]   Efecto FDS promedio: -30.2%
+[13:18:28]   Desviacion estandar: 10.8%
+[13:18:28]   Modelos significativos: 7/8
+[13:18:28] 
+  -> PRECAUCION: Variabilidad entre especificaciones
+[13:18:28] 
+======================================================================
+[13:18:28] FASE 6: Tests de robustez adicionales
+[13:18:28] ======================================================================
+[13:18:28] 
+--- TEST 1: Estabilidad en subperiodos ---
+[13:18:28]   Primera mitad:  Efecto FDS = -33.7% (p=0.0000)
+[13:18:28]   Segunda mitad:  Efecto FDS = -35.0% (p=0.0000)
+[13:18:28]   Diferencia: 1.3 puntos porcentuales
+[13:18:28] 
+--- TEST 2: Excluyendo outliers (percentiles 1-99) ---
+[13:18:28]   Observaciones excluidas: 10
+[13:18:28]   Efecto FDS sin outliers: -33.7% (p=0.0000)
+[13:18:28] 
+--- TEST 3: Sabado vs Domingo por separado ---
+[13:18:28]   Efecto Sabado:  -21.8% (p=0.0000)
+[13:18:28]   Efecto Domingo: -44.7% (p=0.0000)
+[13:18:28] 
+--- TEST 4: Variable dependiente alternativa (log ordenes) ---
+[13:18:28]   Efecto FDS en ordenes: -27.5% (p=0.0000)
+[13:18:28] 
+--- TEST 5: Test placebo (martes como 'falso fds') ---
+[13:18:28]   Efecto 'placebo' (martes): +21.1% (p=0.0000)
+[13:18:28]   -> ADVERTENCIA: Placebo significativo - revisar
+[13:18:28] 
+======================================================================
+[13:18:28] FASE 7: Visualizaciones
+[13:18:28] ======================================================================
+[13:18:32] Visualizaciones generadas
+[13:18:32] 
+======================================================================
+[13:18:32] FASE 8: Reporte Final
+[13:18:32] ======================================================================
+
+======================================================================
+ANALISIS DE EFECTOS CALENDARIO - VERSION ROBUSTA
+======================================================================
+
+Fecha: 2026-01-27 13:18:32.315515
+Observaciones: 451
+
+======================================================================
+CONTROLES INCLUIDOS
+======================================================================
+  - Rezago de volumen (autocorrelacion)
+  - Retorno y volatilidad de Bitcoin
+  - Dummies de shocks macroeconomicos
+  - Efectos fijos por mes
+  - Errores robustos HC3 y HAC
+
+======================================================================
+CONCLUSIONES DE ROBUSTEZ
+======================================================================
+
+  Efecto FDS promedio: -30.2%
+  Rango: [-34.6%, -3.5%]
+  Modelos significativos: 7/8

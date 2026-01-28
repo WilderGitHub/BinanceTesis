@@ -1,0 +1,184 @@
+[10:47:03] Inicio: 2026-01-27 10:47:03.040719
+[10:47:03] ======================================================================
+[10:47:03] CLUSTERING ESTRATIFICADO V2 - TAXONOMIA DE AGENTES
+[10:47:03] ======================================================================
+[10:47:03] ======================================================================
+[10:47:03] FASE 1: Carga de datos
+[10:47:03] ======================================================================
+[10:47:03] Archivo: D:/Binance/Binance Final/Consolidado_al_07dec2025.csv
+[10:47:03] Tamano: 15.05 GB
+[10:47:03] Procesando por chunks...
+[10:47:36]   Chunk 20...
+[10:48:10]   Chunk 40...
+[10:48:44]   Chunk 60...
+[10:49:17]   Chunk 80...
+[10:49:54]   Chunk 100...
+[10:50:03] Transacciones cargadas: 641,541
+[10:50:03] Traders unicos: 3,262
+[10:50:03] 
+======================================================================
+[10:50:03] FASE 2: Calculo de features por trader
+[10:50:03] ======================================================================
+[10:50:03] Periodo: 2024-09-09 a 2025-12-04 (452 dias)
+[10:50:03] Agregando features por trader...
+[10:50:03] Calculando features derivadas...
+[10:50:04]   Calculando concentracion temporal...
+[10:50:05]   Calculando features de comportamiento avanzadas...
+[10:50:07] 
+Features calculadas: 51 columnas
+[10:50:07] Traders: 3,262
+[10:50:07] 
+======================================================================
+[10:50:07] FASE 3: Seleccion de features para clustering
+[10:50:07] ======================================================================
+[10:50:07] Features seleccionadas: 12
+[10:50:07]   - log_volumen
+[10:50:07]   - log_ticket
+[10:50:07]   - log_transacciones
+[10:50:07]   - frecuencia_diaria
+[10:50:07]   - pct_dias_activo
+[10:50:07]   - pct_compras
+[10:50:07]   - balance_cv
+[10:50:07]   - pct_fds
+[10:50:07]   - hora_mean
+[10:50:07]   - concentracion_temporal
+[10:50:07]   - ticket_cv
+[10:50:07]   - irregularidad
+[10:50:07] 
+======================================================================
+[10:50:07] FASE 4: Clustering estratificado
+[10:50:07] ======================================================================
+[10:50:07] 
+Segmento PROFESSION: 245 traders
+[10:50:07] Segmento MASS: 3,017 traders
+[10:50:07] 
+--- Clustering PROFESSION ---
+[10:50:07]   Buscando K optimo en rango (2, 6)...
+[10:50:10]     K=2: Silhouette=0.245, Calinski=85
+[10:50:10]     K=3: Silhouette=0.277, Calinski=74
+[10:50:10]     K=4: Silhouette=0.221, Calinski=75
+[10:50:11]     K=5: Silhouette=0.174, Calinski=67
+[10:50:11]     K=6: Silhouette=0.181, Calinski=61
+[10:50:11]   K optimo: 3 (Silhouette: 0.277)
+[10:50:11] 
+  Distribucion de clusters profession:
+[10:50:11]     Cluster 0: 12 traders (4.9%), Vol: 0.0%, Ticket: $2,609
+[10:50:11]     Cluster 1: 147 traders (60.0%), Vol: 4.1%, Ticket: $864
+[10:50:11]     Cluster 2: 86 traders (35.1%), Vol: 95.9%, Ticket: $1,166
+[10:50:11] 
+--- Clustering MASS ---
+[10:50:11]   Buscando K optimo en rango (2, 8)...
+[10:50:11]     K=2: Silhouette=0.789, Calinski=1917
+[10:50:12]     K=3: Silhouette=0.250, Calinski=1579
+[10:50:12]     K=4: Silhouette=0.181, Calinski=1326
+[10:50:12]     K=5: Silhouette=0.171, Calinski=1209
+[10:50:12]     K=6: Silhouette=0.182, Calinski=1147
+[10:50:13]     K=7: Silhouette=0.196, Calinski=1096
+[10:50:13]     K=8: Silhouette=0.197, Calinski=1044
+[10:50:13]   K optimo: 2 (Silhouette: 0.789)
+[10:50:13] 
+  Distribucion de clusters mass:
+[10:50:13]     Cluster 0: 2,964 traders (98.2%), Vol: 26.3%, Ticket: $467
+[10:50:13]     Cluster 1: 53 traders (1.8%), Vol: 73.7%, Ticket: $1,017
+[10:50:13] 
+--- Combinando resultados ---
+[10:50:13] Taxonomia final: 5 tipos
+[10:50:14] 
+======================================================================
+[10:50:14] FASE 5: Caracterizacion de clusters
+[10:50:14] ======================================================================
+[10:50:14] 
+======================================================================
+[10:50:14] RESUMEN DE TAXONOMIA
+[10:50:14] ======================================================================
+[10:50:14] 
+Tipo    Traders    % Vol  Ticket Prom  Trans/dia  % Compras    % FDS
+[10:50:14] ---------------------------------------------------------------------------
+[10:50:14] P3           86    50.7% $      1,166      10.90      47.0%    22.0%
+[10:50:14] M2           53    34.7% $      1,017      18.75      50.0%    22.0%
+[10:50:14] M1        2,964    12.4% $        467       1.82      51.0%    24.0%
+[10:50:14] P2          147     2.1% $        864       1.95      53.0%    19.0%
+[10:50:14] P1           12     0.0% $      2,609       1.33      58.0%     8.0%
+[10:50:14] 
+======================================================================
+[10:50:14] INTERPRETACION DE TIPOS DE AGENTES
+[10:50:14] ======================================================================
+[10:50:14] 
+P3:
+[10:50:14]   - DOMINANTE en volumen
+[10:50:14]   - Tickets grandes
+[10:50:14]   - Alta frecuencia
+[10:50:14]   - Equilibrado C/V (posible arbitrajista)
+[10:50:14] 
+M2:
+[10:50:14]   - Alto volumen
+[10:50:14]   - Tickets grandes
+[10:50:14]   - Alta frecuencia
+[10:50:14]   - Equilibrado C/V (posible arbitrajista)
+[10:50:14] 
+M1:
+[10:50:14]   - Alto volumen
+[10:50:14]   - Tickets grandes
+[10:50:14]   - Equilibrado C/V (posible arbitrajista)
+[10:50:14] 
+P2:
+[10:50:14]   - Tickets grandes
+[10:50:14]   - Equilibrado C/V (posible arbitrajista)
+[10:50:14]   - Evita FDS
+[10:50:14] 
+P1:
+[10:50:14]   - Bajo volumen
+[10:50:14]   - Tickets grandes
+[10:50:14]   - Equilibrado C/V (posible arbitrajista)
+[10:50:14]   - Evita FDS
+[10:50:14] 
+======================================================================
+[10:50:14] FASE 6: Visualizaciones
+[10:50:14] ======================================================================
+[10:50:16] Visualizaciones generadas
+[10:50:16] 
+======================================================================
+[10:50:16] FASE 7: Reporte Final
+[10:50:16] ======================================================================
+
+======================================================================
+TAXONOMIA DE AGENTES - CLUSTERING ESTRATIFICADO V2
+======================================================================
+
+Fecha: 2026-01-27 10:50:16.699133
+Traders totales: 3,262
+
+======================================================================
+FEATURES UTILIZADAS PARA CLUSTERING
+======================================================================
+  - log_volumen
+  - log_ticket
+  - log_transacciones
+  - frecuencia_diaria
+  - pct_dias_activo
+  - pct_compras
+  - balance_cv
+  - pct_fds
+  - hora_mean
+  - concentracion_temporal
+  - ticket_cv
+  - irregularidad
+
+======================================================================
+RESULTADOS POR SEGMENTO
+======================================================================
+
+PROFESSION:
+  K optimo: 3
+  Silhouette: 0.277
+
+MASS:
+  K optimo: 2
+  Silhouette: 0.789
+
+======================================================================
+ARCHIVOS GENERADOS
+======================================================================
+  Datos: D:/Binance/Binance Final\clustering_datos
+  Tablas: D:/Binance/Binance Final\clustering_tablas
+  Graficos: D:/Binance/Binance Final\clustering_graficos
